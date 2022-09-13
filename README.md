@@ -11,4 +11,4 @@ HHA 507 // Week 3 // Assignment 3
 ## this repo will mostly utilize pandas to perform merges and clean-up, using functions introduced in https://github.com/kezzhou/hha-data-cleanup
 ## for missing data, we may use numpy
 
-## raw data files are placed in the 'raw' folder, which is not pushed to Github because of file size restrictions. Users looking to recreate the script should download raw files based on instructions provided above. The final enriched csv, located appropriately in the 'enriched' folder, will be reduced to a smaller size to avoid committing issues. 
+## raw data files are placed in the 'raw' folder, which is not pushed to Github because of file size restrictions. Users looking to recreate the script should download raw files based on instructions provided above. Users should then create and place raw files under a new folder named 'data' under subfolder 'raw.' The final concatted or merged dataframe should be burned into folder 'data' subfolder 'enriched' with to_csv.
