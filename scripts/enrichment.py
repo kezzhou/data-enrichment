@@ -15,6 +15,7 @@ import numpy as np
 
 
 
+
 #### import csv as dataframes ####
 
 sparcs_df = pd.read_csv('data/raw/Hospital_Inpatient_Discharges__SPARCS_De-Identified___2015.csv')
@@ -24,6 +25,9 @@ sparcs_df.sample
 adi_df = pd.read_csv('data/raw/NY_2015_ADI_9 Digit Zip Code_v3.1.csv')
 
 adi_df
+
+
+
 
 #### pre merge clean-up ####
 
@@ -62,21 +66,37 @@ adi_df.columns = adi_df.columns.str.replace(' ', '_')
 
 adi_df.columns
 
+## let's try and shorten both tables by dropping rows from each. we may as well make them the same length
+
+sparcs_df.drop(sparcs_df.loc[100:].index, inplace=True)
+
+adi_df.drop(adi_df.loc[100:].index, inplace=True)
+
+## the loc arguments of sparcs and adi start at differing points to account for NaN rows dropped in the following functions
+
 sparcs_df.dropna(inplace=True)
 
 adi_df.dropna(inplace=True)
 
 ## because this is a practice repo and these file sizes are huge, we can afford to drop rows with NaN
 
-sparcs_df.drop(sparcs_df.loc[552311:2311006].index, inplace=True)
-
 sparcs_df.shape
 
 adi_df.shape
+
+## sparcs and adi now contain the same amount of rows
+## now we need to ensure that sparcs and adi's zipcode columns match
+## adi's zipid is nine digits, which we need to shorten to first three to match sparcs'
+
+# chopping zipid into first three digits
+adi_df['zipid'] = adi_df['zipid'].str.slice(1, 4)
+
+adi_df 
 
 enrich_df = pd.concat([sparcs_df, adi_df])
 
 enrich_df
 
-## we are running into an error in which the concat or merge operation goes through, but columns from adi are labeled NaN. This may occur because of mismatched dtypes.
-## The attempted solution to this was to match row numbers through drop. This did not remedy the error.
+enrich_df.to_csv('data/enriched/enrich.csv')
+
+## with the new approach, merge gives an empty index and concat gives a stacked combined dataframe with NaN in certain sections
